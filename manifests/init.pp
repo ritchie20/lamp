@@ -32,14 +32,12 @@ class lamp {
 
 	#instalar package MariaDB-server, requiere packete mariadb y actualizar repos de yum	
 	package { 'mariadb-server':
-		require => Exec['yum-makecache'],
 		require => Package['mariadb'],
 		ensure => 'present',
 	}
 	
 	#iniciar servicio mysql, requiere package mariadb y mariadb-server
 	service { 'mariadb':
-		require => Package['mariadb'],
 		require => Package['mariadb-server'],
 		ensure => 'running',
 		enable => 'true',
@@ -49,14 +47,15 @@ class lamp {
 	#======================
 	
 	#instalar package php, requiere actualizar repos de yum
-	package { 'php':
+	package { 'php56w.x86_64':
 		require => Exec['yum-makecache'],
 		ensure => 'present',
 	}
 	
 	#instalar package php-mysql, requiere actualizar repos de yum
-	package { 'php-mysql':
-		require => Exec['yum-makecache'],
+	package { 'php56w-mysql.x86_64':
+		require => Package['php56w.x86_64'],
 		ensure => 'present',
 	}
+
 }
