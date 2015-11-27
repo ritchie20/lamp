@@ -57,5 +57,12 @@ class lamp {
 		require => Package['php56w.x86_64'],
 		ensure => 'present',
 	}
+	
+	#creating defaul PHP file on APACHE public directory
+	file {'/var/wwww/html/info.php':
+		require => Package['php56w-mysql.x86_64'],
+		ensure => 'present',
+		content => '<?php phpinfo(); ?>',
+	}
 
 }
