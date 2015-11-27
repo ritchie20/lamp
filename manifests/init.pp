@@ -1,6 +1,6 @@
 class lamp {
 	
-	#actualizar repos de yum
+	#updating YUM repos
 	exec { 'yum-makecache':
 	command => '/usr/bin/yum makecache',
 	}
@@ -8,13 +8,13 @@ class lamp {
 	#APACHE==================
 	#========================
 	
-	#instalar package de apache, requiere actualizar repos de yum
+	#installing APACHE package, require to update YUM repos first
 	package { 'httpd':
 		require => Exec['yum-makecache'],
 		ensure => 'present',
 	}
 	
-	#iniciar servicio de apache, requiere package de apache
+	#starting APACHE service, require APACHE package first
 	service { 'httpd':
 		require => Package['httpd'],
 		ensure => 'running',
@@ -24,19 +24,19 @@ class lamp {
 	#MARIA-SQL ============
 	#======================
 	
-	#instalar package MariaDB, requiere actualizar repos de yum
+	#installing MariaDB package, require to update YUM repos first
 	package { 'mariadb':
 		require => Exec['yum-makecache'],
 		ensure => 'present',
 	}
 
-	#instalar package MariaDB-server, requiere packete mariadb y actualizar repos de yum	
+	#installing MariaDB-server package, require MariaDB package first
 	package { 'mariadb-server':
 		require => Package['mariadb'],
 		ensure => 'present',
 	}
 	
-	#iniciar servicio mysql, requiere package mariadb y mariadb-server
+	#starting MySQL service, require MariaDB and MariaDB-server packages
 	service { 'mariadb':
 		require => Package['mariadb-server'],
 		ensure => 'running',
@@ -46,13 +46,13 @@ class lamp {
 	#PHP ============
 	#======================
 	
-	#instalar package php, requiere actualizar repos de yum
+	#instaliing PHP package, require to update YUM repos first
 	package { 'php56w.x86_64':
 		require => Exec['yum-makecache'],
 		ensure => 'present',
 	}
 	
-	#instalar package php-mysql, requiere actualizar repos de yum
+	#installing PHP-MYSQL package, require to update YUM repos first
 	package { 'php56w-mysql.x86_64':
 		require => Package['php56w.x86_64'],
 		ensure => 'present',
