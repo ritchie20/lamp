@@ -21,6 +21,15 @@ class lamp {
 		enable => true,
 	}
 	
+	#EXPECT ===============
+	#=======================
+	
+	#installing EXPECT package, required to automate MariaDB mysql_secure_installation script
+	package { 'expect':
+		require => Package['yum-makecache'],
+		ensure => 'present',
+	}
+	
 	#MARIA-SQL ============
 	#======================
 	
@@ -42,6 +51,22 @@ class lamp {
 		ensure => 'running',
 		enable => 'true',
 	}
+	
+	#Creating file to run mysql_secure_installation script
+	file { '/tmp/mysql_secure_installation.sh':
+		ensure => 'file',
+		owner => 'root',
+		mode => '0700',
+		source => 'puppet:///modules/lamp/mysql_secure_installation.sh',
+	}
+	
+	#Running and removing script mysql_secure_installation script.sh
+	exec { 'mysql_secure_installation':
+		require => File['/tmp/mysql_secure_installation.sh'],
+		command => '/tmp/mysql_secure_installation.sh',
+		user => 'root',
+	}
+	
 	
 	#PHP ============
 	#======================
