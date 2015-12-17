@@ -119,7 +119,8 @@ class lamp {
 		ensure => 'file',
 		owner => 'root',
 		mode => '0744',
-		source => 'puppet:///modules/lamp/phpMyAdmin.configuration',
+		source => 'puppet:///modules/lamp/phpMyAdmin.conf',
+		notify => Service['httpd'],
 	}
 
 }
