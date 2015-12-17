@@ -54,6 +54,7 @@ class lamp {
 	
 	#Creating file to run mysql_secure_installation script
 	file { '/tmp/mysql_secure_installation.sh':
+		require => Package['mariadb-server'],
 		ensure => 'file',
 		owner => 'root',
 		mode => '0700',
@@ -96,5 +97,31 @@ class lamp {
 		content => '<?php phpinfo(); ?>',
 		notify => Service['httpd'],
 	}
+	
+	#PHPMYADMIN=======================
+	#=================================
+	
+	#installing repository EPE
+	package {'epel-release':
+		require => Exec['yum-makecache'],
+		ensure => 'present',
+	}
+	
+	#installing package phpmyadmin
+	package { 'phpmyadmin':
+		require => Package['epel-release'],
+		ensure => 'present'
+	}
+	
+	#replacing phpMyAdmin configuration file with our own file
+	file { '/etc/httpd/conf.d/phpMyAdmin.conf':
+		require => Package['phpmyadmin'],
+		ensure => 'file',
+		owner => 'root',
+		mode => '0744',
+		source => 'puppet:///modules/lamp/phpMyAdmin.configuration',
+	}
 
 }
+
+
