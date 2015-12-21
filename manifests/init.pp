@@ -127,7 +127,7 @@ class lamp {
 	#==============================
 	
 	#Script to create wordpress user in MariaDB
-	file { '/tmp/wordpress.sh'
+		file { '/tmp/wordpressdb.sh':
 		require => Exec['mysql_secure_installation'],
 		ensure => 'file',
 		owner => 'root',
