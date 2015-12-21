@@ -122,6 +122,26 @@ class lamp {
 		source => 'puppet:///modules/lamp/phpMyAdmin.conf',
 		notify => Service['httpd'],
 	}
+	
+	#WORDPRESS=====================
+	#==============================
+	
+	#Script to create wordpress user in MariaDB
+	file { '/tmp/wordpress.sh'
+		require => Exec['mysql_secure_installation'],
+		ensure => 'file',
+		owner => 'root',
+		mode => '0700',
+		source => 'puppet:///modules/lamp/wordpressdb.sh',		
+	}
+	
+	#Executing scrip wordpressdb.sh
+	exec { 'wordpress.sh':
+		require => File['/tmp/wordpress.sh'],
+		command => '/tmp/wordpressdb.sh',
+		user => 'root',
+	}
+
 
 }
 
