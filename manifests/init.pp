@@ -136,8 +136,8 @@ class lamp {
 	}
 	
 	#Executing scrip wordpressdb.sh
-	exec { 'wordpress.sh':
-		require => File['/tmp/wordpress.sh'],
+	exec { 'wordpressdb.sh':
+		require => File['/tmp/wordpressdb.sh'],
 		command => '/tmp/wordpressdb.sh',
 		user => 'root',
 	}
