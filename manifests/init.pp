@@ -135,11 +135,20 @@ class lamp {
 		source => 'puppet:///modules/lamp/wordpressdb.sh',		
 	}
 	
-	#Executing scrip wordpressdb.sh
+	#Executing scrip wordpressdb.sh to create Wordpress user
 	exec { 'wordpressdb.sh':
 		require => File['/tmp/wordpressdb.sh'],
 		command => '/tmp/wordpressdb.sh',
 		user => 'root',
+	}
+	
+	#Moving wordpress executable to /tmp
+	file {'/tmp/wordpress-4.4.1.zip':
+		require => Exec['wordpress.sh'],
+		ensure => 'file',
+		owner => 'root',
+		mode => '0700',
+		source => 'puppet:///modules/lamp/wordpress-4.4.1.zip',
 	}
 
 
