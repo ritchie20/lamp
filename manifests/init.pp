@@ -142,7 +142,7 @@ class lamp {
 		user => 'root',
 	}
 	
-	#Moving wordpress executable to /tmp
+	#Moving wordpress.zip file to /tmp
 	file {'/tmp/wordpress-4.4.1.zip':
 		require => Exec['wordpressdb.sh'],
 		ensure => 'file',
@@ -150,7 +150,21 @@ class lamp {
 		mode => '0700',
 		source => 'puppet:///modules/lamp/wordpress-4.4.1.zip',
 	}
-
+	
+	#Uncompressing wordpress and moving it to /var/www/html directory
+	exec { 'wordpress':
+		require => File['/tmp/wordpress-4.4.1.zip'],
+		command => 'unzip /tmp/wordpress-4.4.1.zip -d /tmp; cp -r /tmp/wordpress/* /var/www/html/',
+		user => 'root',
+		
+	#Moving wp-config.php file to /var/www/html directory
+		file { '/var/www/html/wp-config.php':
+		require => Exec['wordpress'],
+		ensure => 'file',
+		owner => 'root',
+		mode => '0700',
+		source => 'puppet:///modules/lamp/wp-config.php',
+		}
 
 }
 
