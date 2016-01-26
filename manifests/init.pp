@@ -68,6 +68,22 @@ class lamp {
 		user => 'root',
 	}
 	
+	#Script to create DB user in MariaDB
+	file { '/tmp/wordpressdb.sh':
+		require => Exec['mysql_secure_installation'],
+		ensure => 'file',
+		owner => 'root',
+		mode => '0700',
+		source => 'puppet:///modules/lamp/wordpressdb.sh',		
+	}
+	
+	#Executing script wordpressdb.sh to create DB user
+	exec { 'wordpressdb.sh':
+		require => File['/tmp/wordpressdb.sh'],
+		command => '/tmp/wordpressdb.sh',
+		user => 'root',
+	}
+	
 	
 	#PHP ============
 	#======================
