@@ -89,20 +89,20 @@ class lamp {
 	#======================
 	
 	#instaliing PHP package, require to update YUM repos first
-	package { 'php56w.x86_64':
+	package { 'php':
 		require => Exec['yum-makecache'],
 		ensure => 'present',
 	}
 	
 	#installing PHP-MYSQL package, require to update YUM repos first
-	package { 'php56w-mysql.x86_64':
-		require => Package['php56w.x86_64'],
+	package { 'php-mysql':
+		require => Package['php'],
 		ensure => 'present',
 	}
 	
 	#creating directory for PHP-INFO file
 	file { '/var/www/html':
-		require => Package['php56w-mysql.x86_64'],
+		require => Package['php-mysql'],
 		ensure => 'directory',
 	}
 	
